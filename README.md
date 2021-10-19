@@ -81,8 +81,8 @@ npm install mqtt --save
 For the sake of simplicity, let's put the subscriber and the publisher in the same file:
 
 ```js
-var mqtt = require('mqtt')
-var client  = mqtt.connect('mqtt://test.mosquitto.org')
+const mqtt = require('mqtt')
+const client  = mqtt.connect('mqtt://test.mosquitto.org')
 
 client.on('connect', function () {
   client.subscribe('presence', function (err) {
@@ -659,8 +659,8 @@ Support [WeChat Mini Program](https://mp.weixin.qq.com/). See [Doc](https://mp.w
 ## Example(js)
 
 ```js
-var mqtt = require('mqtt')
-var client = mqtt.connect('wxs://test.mosquitto.org')
+const mqtt = require('mqtt')
+const client = mqtt.connect('wxs://test.mosquitto.org')
 ```
 
 ## Example(ts)
@@ -677,8 +677,8 @@ Surport [Ali Mini Program](https://open.alipay.com/channel/miniIndex.htm). See [
 ## Example(js)
 
 ```js
-var mqtt = require('mqtt')
-var client = mqtt.connect('alis://test.mosquitto.org')
+const mqtt = require('mqtt')
+const client = mqtt.connect('alis://test.mosquitto.org')
 ```
 
 ## Example(ts)
@@ -711,7 +711,7 @@ gzip <browserMqtt.js | wc -c
 <a name="webpack"></a>
 ### Webpack
 
-Just like browserify, export MQTT.js as library. The exported module would be `var mqtt = xxx` and it will add an object in the global space. You could also export module in other [formats (AMD/CommonJS/others)](http://webpack.github.io/docs/configuration.html#output-librarytarget) by setting **output.libraryTarget** in webpack configuration.
+Just like browserify, export MQTT.js as library. The exported module would be `const mqtt = xxx` and it will add an object in the global space. You could also export module in other [formats (AMD/CommonJS/others)](http://webpack.github.io/docs/configuration.html#output-librarytarget) by setting **output.libraryTarget** in webpack configuration.
 
 ```javascript
 npm install -g webpack // install webpack
@@ -731,7 +731,7 @@ you can then use mqtt.js in the browser with the same api than node's one.
 <body>
 <script src="./browserMqtt.js"></script>
 <script>
-  var client = mqtt.connect() // you add a ws:// url here
+  const client = mqtt.connect() // you add a ws:// url here
   client.subscribe("mqtt/demo")
 
   client.on("message", function (topic, payload) {

@@ -224,7 +224,7 @@ module.exports = function (server, config) {
         assert.strictEqual(spy.callCount, 1, 'end was emitted more than once for reconnecting client')
       }
 
-      var spy = sinon.spy(endCallback)
+      const spy = sinon.spy(endCallback)
       client.on('end', spy)
       setTimeout(() => {
         client.end.bind(client)
@@ -598,7 +598,7 @@ module.exports = function (server, config) {
       const incomingStore = new mqtt.Store({ clean: false })
       const outgoingStore = new mqtt.Store({ clean: false })
       let publishCount = 0
-      var server2 = serverBuilder(config.protocol, function (serverClient) {
+      const server2 = serverBuilder(config.protocol, function (serverClient) {
         serverClient.on('connect', function () {
           const connack = version === 5 ? { reasonCode: 0 } : { returnCode: 0 }
           serverClient.connack(connack)
@@ -1293,7 +1293,7 @@ module.exports = function (server, config) {
       let client = {}
       const incomingStore = new mqtt.Store({ clean: false })
       const outgoingStore = new mqtt.Store({ clean: false })
-      var server2 = serverBuilder(config.protocol, function (serverClient) {
+      const server2 = serverBuilder(config.protocol, function (serverClient) {
         // errors are not interesting for this test
         // but they might happen on some platforms
         serverClient.on('error', function () {})
@@ -1756,7 +1756,7 @@ module.exports = function (server, config) {
           const expected = []
 
           for (k in topics) {
-            if (topics.hasOwnProperty(k)) {
+            if (Object.prototype.hasOwnProperty.call(topics, k)) {
               const result = {
                 topic: k,
                 qos: topics[k].qos
@@ -2041,7 +2041,7 @@ module.exports = function (server, config) {
         client.end(true, done)
       }
 
-      var spiedMessageHandler = sinon.spy(messageHandler)
+      const spiedMessageHandler = sinon.spy(messageHandler)
 
       client.subscribe(testPacket.topic)
       client.on('message', spiedMessageHandler)
@@ -2258,14 +2258,15 @@ module.exports = function (server, config) {
 
         // send the mocked response
         switch (packet.cmd) {
-          case 'subscribe':
+          case 'subscribe': {
             const suback = { cmd: 'suback', messageId: packet.messageId, granted: [2] }
             client._handlePacket(suback, function (err) {
               assert.isNotOk(err)
             })
             break
+          }
           case 'pubrec':
-          case 'pubcomp':
+          case 'pubcomp': {
             // for both pubrec and pubcomp, reply with pubrel, simulating the server not receiving the pubcomp
             if (packet.cmd === 'pubcomp') {
               pubcompCount++
@@ -2292,6 +2293,7 @@ module.exports = function (server, config) {
               }
             })
             break
+          }
         }
       }
 
@@ -2711,7 +2713,7 @@ module.exports = function (server, config) {
       let client = {}
       const incomingStore = new mqtt.Store({ clean: false })
       const outgoingStore = new mqtt.Store({ clean: false })
-      var server2 = serverBuilder(config.protocol, function (serverClient) {
+      const server2 = serverBuilder(config.protocol, function (serverClient) {
         serverClient.on('connect', function (packet) {
           const connack = version === 5 ? { reasonCode: 0 } : { returnCode: 0 }
           serverClient.connack(connack)
@@ -2827,7 +2829,7 @@ module.exports = function (server, config) {
       let client = {}
       const incomingStore = new mqtt.Store({ clean: false })
       const outgoingStore = new mqtt.Store({ clean: false })
-      var server2 = serverBuilder(config.protocol, function (serverClient) {
+      const server2 = serverBuilder(config.protocol, function (serverClient) {
         serverClient.on('connect', function (packet) {
           const connack = version === 5 ? { reasonCode: 0 } : { returnCode: 0 }
           serverClient.connack(connack)
@@ -2873,7 +2875,7 @@ module.exports = function (server, config) {
       let client = {}
       const incomingStore = new mqtt.Store({ clean: false })
       const outgoingStore = new mqtt.Store({ clean: false })
-      var server2 = serverBuilder(config.protocol, function (serverClient) {
+      const server2 = serverBuilder(config.protocol, function (serverClient) {
         serverClient.on('connect', function (packet) {
           const connack = version === 5 ? { reasonCode: 0 } : { returnCode: 0 }
           serverClient.connack(connack)
@@ -2919,7 +2921,7 @@ module.exports = function (server, config) {
       let client = {}
       const incomingStore = new mqtt.Store({ clean: false })
       const outgoingStore = new mqtt.Store({ clean: false })
-      var server2 = serverBuilder(config.protocol, function (serverClient) {
+      const server2 = serverBuilder(config.protocol, function (serverClient) {
         serverClient.on('connect', function (packet) {
           const connack = version === 5 ? { reasonCode: 0 } : { returnCode: 0 }
           serverClient.connack(connack)
@@ -2972,7 +2974,7 @@ module.exports = function (server, config) {
       let client = {}
       const incomingStore = new mqtt.Store({ clean: false })
       const outgoingStore = new mqtt.Store({ clean: false })
-      var server2 = serverBuilder(config.protocol, function (serverClient) {
+      const server2 = serverBuilder(config.protocol, function (serverClient) {
         // errors are not interesting for this test
         // but they might happen on some platforms
         serverClient.on('error', function () {})

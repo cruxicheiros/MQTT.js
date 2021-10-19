@@ -114,16 +114,18 @@ function serverBuilder (protocol, handler) {
   }
 
   switch (protocol) {
-    case 'mqtt':
+    case 'mqtt': {
       return new MqttServer(handler)
-    case 'mqtts':
+    }
+    case 'mqtts': {
       return new MqttSecureServer({
         key: fs.readFileSync(KEY),
         cert: fs.readFileSync(CERT)
       },
       handler)
-    case 'ws':
-      var attachWebsocketServer = function (server) {
+    }
+    case 'ws': {
+      const attachWebsocketServer = (server) => {
         const webSocketServer = new WebSocket.Server({ server: server, perMessageDeflate: false })
 
         webSocketServer.on('connection', function (ws) {
@@ -137,10 +139,11 @@ function serverBuilder (protocol, handler) {
         })
       }
 
-      var httpServer = http.createServer()
+      const httpServer = http.createServer()
       attachWebsocketServer(httpServer)
       httpServer.on('client', handler)
       return httpServer
+    }
   }
 }
 

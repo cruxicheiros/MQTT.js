@@ -1,12 +1,11 @@
 'use strict'
 
-let handleClient
 const WS = require('ws')
 const WebSocketServer = WS.Server
 const Connection = require('mqtt-connection')
 const http = require('http')
 
-handleClient = function (client) {
+const handleClient = function (client) {
   const self = this
 
   if (!self.clients) {
@@ -102,15 +101,13 @@ function start (startPort, done) {
   const wss = new WebSocketServer({ server: server })
 
   wss.on('connection', function (ws) {
-    let stream, connection
-
     if (!(ws.protocol === 'mqtt' ||
           ws.protocol === 'mqttv3.1')) {
       return ws.close()
     }
 
-    stream = WS.createWebSocketStream(ws)
-    connection = new Connection(stream)
+    const stream = WS.createWebSocketStream(ws)
+    const connection = new Connection(stream)
     handleClient.call(server, connection)
   })
   server.listen(startPort, done)

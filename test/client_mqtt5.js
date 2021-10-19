@@ -105,7 +105,7 @@ describe('MQTT 5.0', function () {
     const client = mqtt.connect(opts)
 
     let publishCount = 0
-    var server103 = new MqttServer(function (serverClient) {
+    const server103 = new MqttServer(function (serverClient) {
       serverClient.on('connect', function (packet) {
         serverClient.connack({
           reasonCode: 0,
@@ -156,7 +156,7 @@ describe('MQTT 5.0', function () {
     const client = mqtt.connect(opts)
 
     let publishCount = 0
-    var server103 = new MqttServer(function (serverClient) {
+    const server103 = new MqttServer(function (serverClient) {
       serverClient.on('connect', function (packet) {
         serverClient.connack({
           reasonCode: 0,
@@ -231,7 +231,7 @@ describe('MQTT 5.0', function () {
 
     let connectCount = 0
     let publishCount = 0
-    var server103 = new MqttServer(function (serverClient) {
+    const server103 = new MqttServer(function (serverClient) {
       serverClient.on('connect', function (packet) {
         switch (connectCount++) {
           case 0:
@@ -255,6 +255,7 @@ describe('MQTT 5.0', function () {
         }
       })
       serverClient.on('publish', function (packet) {
+        let alias = ''
         switch (publishCount++) {
           case 0:
             assert.strictEqual(packet.topic, 'test1')
@@ -267,22 +268,21 @@ describe('MQTT 5.0', function () {
               serverClient.stream.destroy()
             })
             break
-          case 2:
+          case 2: {
             assert.strictEqual(packet.topic, 'test1')
-            var alias1
             if (packet.properties) {
-              alias1 = packet.properties.topicAlias
+              alias = packet.properties.topicAlias
             }
-            assert.strictEqual(alias1, undefined)
+            assert.strictEqual(alias, undefined)
             serverClient.puback({ messageId: packet.messageId })
             break
+          }
           case 3:
             assert.strictEqual(packet.topic, 'test1')
-            var alias2
             if (packet.properties) {
-              alias2 = packet.properties.topicAlias
+              alias = packet.properties.topicAlias
             }
-            assert.strictEqual(alias2, undefined)
+            assert.strictEqual(alias, undefined)
             serverClient.puback({ messageId: packet.messageId })
             server103.close()
             client.end(true, done)
@@ -318,7 +318,7 @@ describe('MQTT 5.0', function () {
 
     let connectCount = 0
     let publishCount = 0
-    var server103 = new MqttServer(function (serverClient) {
+    const server103 = new MqttServer(function (serverClient) {
       serverClient.on('connect', function (packet) {
         switch (connectCount++) {
           case 0:
@@ -345,33 +345,31 @@ describe('MQTT 5.0', function () {
         }
       })
       serverClient.on('publish', function (packet) {
+        let alias = ''
         switch (publishCount++) {
           case 0:
             assert.strictEqual(packet.topic, 'test1')
-            var alias1
             if (packet.properties) {
-              alias1 = packet.properties.topicAlias
+              alias = packet.properties.topicAlias
             }
-            assert.strictEqual(alias1, undefined)
+            assert.strictEqual(alias, undefined)
             assert.strictEqual(packet.qos, 1)
             serverClient.puback({ messageId: packet.messageId })
             break
           case 1:
             assert.strictEqual(packet.topic, 'test1')
-            var alias2
             if (packet.properties) {
-              alias2 = packet.properties.topicAlias
+              alias = packet.properties.topicAlias
             }
-            assert.strictEqual(alias2, undefined)
+            assert.strictEqual(alias, undefined)
             assert.strictEqual(packet.qos, 0)
             break
           case 2:
             assert.strictEqual(packet.topic, 'test1')
-            var alias3
             if (packet.properties) {
-              alias3 = packet.properties.topicAlias
+              alias = packet.properties.topicAlias
             }
-            assert.strictEqual(alias3, undefined)
+            assert.strictEqual(alias, undefined)
             assert.strictEqual(packet.qos, 0)
             server103.close()
             client.end(true, done)
@@ -560,10 +558,9 @@ describe('MQTT 5.0', function () {
 
   it('should throw an error if there is Auth Data with no Auth Method', function (done) {
     this.timeout(5000)
-    let client
     const opts = { host: 'localhost', port: ports.PORTAND115, protocolVersion: 5, properties: { authenticationData: Buffer.from([1, 2, 3, 4]) } }
     console.log('client connecting')
-    client = mqtt.connect(opts)
+    const client = mqtt.connect(opts)
     client.on('error', function (error) {
       console.log('error hit')
       assert.strictEqual(error.message, 'Packet has no Authentication Method')
@@ -633,7 +630,7 @@ describe('MQTT 5.0', function () {
     this.timeout(15000)
     let tryReconnect = true
     let reconnectEvent = false
-    var server316 = new MqttServer(function (serverClient) {
+    const server316 = new MqttServer(function (serverClient) {
       serverClient.on('connect', function (packet) {
         serverClient.connack({
           reasonCode: 0,
@@ -676,7 +673,7 @@ describe('MQTT 5.0', function () {
     // this.timeout(15000)
     let tryReconnect = true
     let reconnectEvent = false
-    var server326 = new MqttServer(function (serverClient) {
+    const server326 = new MqttServer(function (serverClient) {
       serverClient.on('connect', function (packet) {
         serverClient.connack({
           reasonCode: 0,
@@ -766,7 +763,7 @@ describe('MQTT 5.0', function () {
       protocolVersion: 5
     }
     const subOptions = { properties: { subscriptionIdentifier: 1234 } }
-    var server119 = new MqttServer(function (serverClient) {
+    const server119 = new MqttServer(function (serverClient) {
       serverClient.on('connect', function (packet) {
         serverClient.connack({
           reasonCode: 0
@@ -861,7 +858,7 @@ describe('MQTT 5.0', function () {
 
   it('server side disconnect', function (done) {
     this.timeout(15000)
-    var server327 = new MqttServer(function (serverClient) {
+    const server327 = new MqttServer(function (serverClient) {
       serverClient.on('connect', function (packet) {
         serverClient.connack({
           reasonCode: 0
@@ -913,7 +910,7 @@ describe('MQTT 5.0', function () {
       })
     })
 
-    var client = mqtt.connect(opts)
+    const client = mqtt.connect(opts)
     client.once('connect', function () {
       client.subscribe('a/b', { qos: 1 })
     })

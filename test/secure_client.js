@@ -70,7 +70,7 @@ const serverListener = function (client) {
   })
 }
 
-var server = new MqttSecureServer({
+const server = new MqttSecureServer({
   key: fs.readFileSync(KEY),
   cert: fs.readFileSync(CERT)
 }, serverListener).listen(port)
@@ -159,15 +159,14 @@ describe('MqttSecureClient', function () {
     })
 
     it('should support SNI on the TLS connection', function (done) {
-      let hostname, client
       server.removeAllListeners('secureConnection') // clear eventHandler
       server.once('secureConnection', function (tlsSocket) { // one time eventHandler
         assert.equal(tlsSocket.servername, hostname) // validate SNI set
         server.setupConnection(tlsSocket)
       })
 
-      hostname = 'localhost'
-      client = mqtt.connect({
+      const hostname = 'localhost'
+      const client = mqtt.connect({
         protocol: 'mqtts',
         port: port,
         ca: [fs.readFileSync(CERT)],

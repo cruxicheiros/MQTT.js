@@ -108,7 +108,7 @@ describe('Websocket Client', function () {
     const sig = '?AUTH=token'
     const expected = baseUrl + sig
     let actual
-    var opts = makeOptions({
+    const opts = makeOptions({
       path: '/mqtt',
       transformWsUrl: function (url, opt, client) {
         assert.equal(url, baseUrl)

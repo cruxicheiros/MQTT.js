@@ -17,7 +17,7 @@ class MqttServer extends net.Server {
     const that = this
     this.on('connection', function (duplex) {
       this.connectionList.push(duplex)
-      var connection = new Connection(duplex, function () {
+      const connection = new Connection(duplex, function () {
         that.emit('client', connection)
       })
     })
@@ -71,7 +71,7 @@ class MqttSecureServer extends tls.Server {
     this.on('secureConnection', function (socket) {
       this.connectionList.push(socket)
       const that = this
-      var connection = new Connection(socket, function () {
+      const connection = new Connection(socket, function () {
         that.emit('client', connection)
       })
     })
@@ -83,7 +83,7 @@ class MqttSecureServer extends tls.Server {
 
   setupConnection (duplex) {
     const that = this
-    var connection = new Connection(duplex, function () {
+    const connection = new Connection(duplex, function () {
       that.emit('client', connection)
     })
   }

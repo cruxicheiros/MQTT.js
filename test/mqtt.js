@@ -6,7 +6,6 @@ const mqtt = require('../')
 
 describe('mqtt', function () {
   describe('#connect', function () {
-    let sslOpts, sslOpts2
     it('should return an MqttClient when connect is called with mqtt:/ url', function () {
       const c = mqtt.connect('mqtt://localhost:1883')
 
@@ -84,7 +83,7 @@ describe('mqtt', function () {
       c.end()
     })
 
-    sslOpts = {
+    const sslOpts = {
       keyPath: path.join(__dirname, 'helpers', 'private-key.pem'),
       certPath: path.join(__dirname, 'helpers', 'public-cert.pem'),
       caPaths: [path.join(__dirname, 'helpers', 'public-cert.pem')]
@@ -134,7 +133,7 @@ describe('mqtt', function () {
       c.end()
     })
 
-    sslOpts2 = {
+    const sslOpts2 = {
       key: fs.readFileSync(path.join(__dirname, 'helpers', 'private-key.pem')),
       cert: fs.readFileSync(path.join(__dirname, 'helpers', 'public-cert.pem')),
       ca: [fs.readFileSync(path.join(__dirname, 'helpers', 'public-cert.pem'))]

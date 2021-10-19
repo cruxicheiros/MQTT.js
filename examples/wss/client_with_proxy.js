@@ -13,8 +13,8 @@ proxy: your proxy e.g. proxy.foo.bar.com
 port: http proxy port e.g. 8080
 */
 const proxy = process.env.http_proxy || 'http://<proxy>:<port>'
-const parsed = url.parse(endpoint)
-const proxyOpts = url.parse(proxy)
+const parsed = url.URL(endpoint)
+const proxyOpts = url.URL(proxy)
 // true for wss
 proxyOpts.secureEndpoint = parsed.protocol ? parsed.protocol === 'wss:' : true
 const agent = new HttpsProxyAgent(proxyOpts)

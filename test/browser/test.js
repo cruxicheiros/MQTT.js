@@ -2,8 +2,7 @@
 
 const mqtt = require('../../lib/connect')
 const xtend = require('xtend')
-const _URL = require('url')
-const parsed = _URL.parse(document.URL)
+const parsed = URL.URL(document.URL)
 const isHttps = parsed.protocol === 'https:'
 const port = parsed.port || (isHttps ? 443 : 80)
 const host = parsed.hostname
