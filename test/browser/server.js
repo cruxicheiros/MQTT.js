@@ -1,13 +1,13 @@
 'use strict'
 
-var handleClient
-var WS = require('ws')
-var WebSocketServer = WS.Server
-var Connection = require('mqtt-connection')
-var http = require('http')
+let handleClient
+const WS = require('ws')
+const WebSocketServer = WS.Server
+const Connection = require('mqtt-connection')
+const http = require('http')
 
 handleClient = function (client) {
-  var self = this
+  const self = this
 
   if (!self.clients) {
     self.clients = {}
@@ -15,16 +15,16 @@ handleClient = function (client) {
 
   client.on('connect', function (packet) {
     if (packet.clientId === 'invalid') {
-      client.connack({returnCode: 2})
+      client.connack({ returnCode: 2 })
     } else {
-      client.connack({returnCode: 0})
+      client.connack({ returnCode: 0 })
     }
     self.clients[packet.clientId] = client
     client.subscriptions = []
   })
 
   client.on('publish', function (packet) {
-    var i, k, c, s, publish
+    let i, k, c, s, publish
     switch (packet.qos) {
       case 0:
         break
@@ -50,7 +50,7 @@ handleClient = function (client) {
 
       if (publish) {
         try {
-          c.publish({topic: packet.topic, payload: packet.payload})
+          c.publish({ topic: packet.topic, payload: packet.payload })
         } catch (error) {
           delete self.clients[k]
         }
@@ -71,12 +71,12 @@ handleClient = function (client) {
   })
 
   client.on('subscribe', function (packet) {
-    var qos
-    var topic
-    var reg
-    var granted = []
+    let qos
+    let topic
+    let reg
+    const granted = []
 
-    for (var i = 0; i < packet.subscriptions.length; i++) {
+    for (let i = 0; i < packet.subscriptions.length; i++) {
       qos = packet.subscriptions[i].qos
       topic = packet.subscriptions[i].topic
       reg = new RegExp(topic.replace('+', '[^/]+').replace('#', '.+') + '$')
@@ -85,7 +85,7 @@ handleClient = function (client) {
       client.subscriptions.push(reg)
     }
 
-    client.suback({messageId: packet.messageId, granted: granted})
+    client.suback({ messageId: packet.messageId, granted: granted })
   })
 
   client.on('unsubscribe', function (packet) {
@@ -98,11 +98,11 @@ handleClient = function (client) {
 }
 
 function start (startPort, done) {
-  var server = http.createServer()
-  var wss = new WebSocketServer({server: server})
+  const server = http.createServer()
+  const wss = new WebSocketServer({ server: server })
 
   wss.on('connection', function (ws) {
-    var stream, connection
+    let stream, connection
 
     if (!(ws.protocol === 'mqtt' ||
           ws.protocol === 'mqttv3.1')) {

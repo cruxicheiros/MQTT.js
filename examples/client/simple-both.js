@@ -1,7 +1,7 @@
 'use strict'
 
-var mqtt = require('../..')
-var client = mqtt.connect()
+const mqtt = require('../..')
+const client = mqtt.connect()
 
 // or var client = mqtt.connect({ port: 1883, host: '192.168.1.100', keepalive: 10000});
 

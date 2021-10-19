@@ -1,16 +1,16 @@
 'use strict'
 
-var mqtt = require('../../lib/connect')
-var xtend = require('xtend')
-var _URL = require('url')
-var parsed = _URL.parse(document.URL)
-var isHttps = parsed.protocol === 'https:'
-var port = parsed.port || (isHttps ? 443 : 80)
-var host = parsed.hostname
-var protocol = isHttps ? 'wss' : 'ws'
+const mqtt = require('../../lib/connect')
+const xtend = require('xtend')
+const _URL = require('url')
+const parsed = _URL.parse(document.URL)
+const isHttps = parsed.protocol === 'https:'
+const port = parsed.port || (isHttps ? 443 : 80)
+const host = parsed.hostname
+const protocol = isHttps ? 'wss' : 'ws'
 
 function clientTests (buildClient) {
-  var client
+  let client
 
   beforeEach(function () {
     client = buildClient()
@@ -50,7 +50,7 @@ function suiteFactory (configName, opts) {
     return xtend(base || {}, opts)
   }
 
-  var suiteName = 'MqttClient(' + configName + '=' + JSON.stringify(opts) + ')'
+  const suiteName = 'MqttClient(' + configName + '=' + JSON.stringify(opts) + ')'
   describe(suiteName, function () {
     this.timeout(10000)
 
@@ -88,5 +88,5 @@ function suiteFactory (configName, opts) {
   })
 }
 
-suiteFactory('v3', {protocolId: 'MQIsdp', protocolVersion: 3})
+suiteFactory('v3', { protocolId: 'MQIsdp', protocolVersion: 3 })
 suiteFactory('default', {})
